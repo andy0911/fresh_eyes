@@ -12,16 +12,16 @@ LLM ペルソナは実在の受信者の代表ではありません。出力は 
 
 ## インストール
 
-このリポジトリはマーケットプレイスを兼ねています（`.claude-plugin/marketplace.json`）。GitHub に置いた場合は Claude Code 内で次を実行します（`<owner>/<repo>` は実際のリポジトリに置き換えてください）。
+このリポジトリはマーケットプレイスを兼ねています（`.claude-plugin/marketplace.json`）。Claude Code 内で次を実行します。
 
 ```
-/plugin install fresh-eyes --marketplace <owner>/<repo>
+/plugin install fresh-eyes --marketplace andy0911/fresh_eyes
 ```
 
 二段階で行う場合：
 
 ```
-/plugin marketplace add <owner>/<repo>
+/plugin marketplace add andy0911/fresh_eyes
 /plugin install fresh-eyes@fresh-eyes-marketplace
 ```
 
