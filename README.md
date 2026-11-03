@@ -6,13 +6,15 @@
 
 ## 3分で試す
 
+導入は3分で終わります。レビュー自体は1回 8〜12 分かかり、サブエージェント5体分のトークン（目安は [所要時間](#所要時間)）を使います。
+
 **1. 導入する**（Claude Code のセッション内で1行。v2.1.275 以降）
 
 ```
 /plugin install fresh-eyes --marketplace andy0911/fresh_eyes
 ```
 
-パネルが開くので、スコープ（自分だけ／このリポジトリ全員／このリポジトリで自分だけ）を選ぶと導入されます。古い Claude Code や、このコマンドが通らないときは [他の導入方法](#他の導入方法) を使ってください。
+実際の流れは、マーケットプレイス `andy0911/fresh_eyes` を追加してよいか確認される → 承認する → プラグインの詳細が開く → スコープを選ぶ、です。試すだけなら「自分だけ（user）」を選びます。古い Claude Code や、このコマンドが通らないときは [他の導入方法](#他の導入方法) を使ってください。
 
 **2. 手元の原稿で実行する**（Markdown の記事なら追加の準備は要りません）
 
@@ -35,14 +37,6 @@
 
 直したら `--round 2 --prev <前回の report.md>` で再実行します。全文の例は [examples/sample-report.md](examples/sample-report.md) にあります。所要は1回 12〜20 分です。
 
-名前が3つ出てくるので、対応を先に示します。
-
-| 名前 | 何か | 使う場面 |
-| --- | --- | --- |
-| `andy0911/fresh_eyes` | GitHub リポジトリ。マーケットプレイスを兼ねる | `--marketplace` や `marketplace add` の引数 |
-| `fresh-eyes-marketplace` | マーケットプレイスの登録名（`marketplace.json` の `name`） | `fresh-eyes@fresh-eyes-marketplace` の `@` の後ろ |
-| `fresh-eyes` | プラグイン名 | コマンドの接頭辞 `/fresh-eyes:review` |
-
 ## なぜ必要か
 
 作者は自分の成果物を初見の目で見られません。知っていることを知らない状態に戻せない「知識の呪い」は、デバイアスの指示でも消えないことが実証されています（Camerer ら 1989、Hinds 1999）。専門家だけに見せても、専門家は初学者の躓きを読み誤ります（Nathan & Petrosino 2003）。単独のレビュアーが見つける問題は全体の2〜5割で、異なる視点を割り当てた複数の独立したレビュアーを集約する方が検出率が上がります（Nielsen & Molich 1990、Porter ら 1995）。
@@ -55,13 +49,17 @@ LLM ペルソナは実在の受信者の代表ではありません。出力は 
 
 ### 推奨：1行で導入
 
-Claude Code のセッション内で次を実行します（v2.1.275 以降。ターミナルから `claude plugin install fresh-eyes --marketplace andy0911/fresh_eyes` と打つ場合は v2.1.292 以降）。
+[3分で試す](#3分で試す) の手順1と同じです。ターミナルから `claude plugin install fresh-eyes --marketplace andy0911/fresh_eyes` と打つ場合は v2.1.292 以降が必要で、マーケットプレイスの追加は確認なしで行われます。バージョンは `claude --version` で確認できます。
 
-```
-/plugin install fresh-eyes --marketplace andy0911/fresh_eyes
-```
+### 3つの名前
 
-初回はマーケットプレイスの追加を確認されます。承認するとプラグインの詳細が開き、スコープを選ぶと導入されます。バージョンは `claude --version` で確認できます。
+このリポジトリは `.claude-plugin/marketplace.json` を同梱して自分自身を配布しています。それが「マーケットプレイスを兼ねる」の意味で、別のカタログを用意せずにこのリポジトリだけで導入できます。コマンドには3つの名前が出てきます。
+
+| 名前 | 何か | 使う場面 |
+| --- | --- | --- |
+| `andy0911/fresh_eyes` | GitHub リポジトリ。マーケットプレイスを兼ねる | `--marketplace` や `marketplace add` の引数 |
+| `fresh-eyes-marketplace` | マーケットプレイスの登録名（`marketplace.json` の `name`） | `fresh-eyes@fresh-eyes-marketplace` の `@` の後ろ |
+| `fresh-eyes` | プラグイン名 | コマンドの接頭辞 `/fresh-eyes:review` |
 
 ### 他の導入方法
 
@@ -90,9 +88,10 @@ claude --plugin-dir /path/to/fresh_eyes
 
 ### 更新
 
-```
-/plugin marketplace update fresh-eyes-marketplace
-/plugin update fresh-eyes@fresh-eyes-marketplace
+セッション内では `/plugin marketplace update fresh-eyes-marketplace` でカタログを更新したあと、`/plugin` の **Installed** タブでこのプラグインを選び **Update now** を実行します。ターミナルからは次の1行です。
+
+```bash
+claude plugin update fresh-eyes@fresh-eyes-marketplace
 ```
 
 ### 種別ごとに必要なもの
