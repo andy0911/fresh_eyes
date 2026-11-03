@@ -88,8 +88,10 @@ reviews/<YYYYMMDD-HHMM>-<種別>-<slug>/
 `reference/persona-prompts.md` の雛形で `inputs/prompt-<persona>.md` を作ります。次に、各プロンプトについて漏れ点検を実行します。
 
 ```bash
-python3 ${CLAUDE_PLUGIN_ROOT}/scripts/leak-check.py inputs/prompt-expert.md inputs/hidden.md
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/leak-check.py inputs/prompt-expert.md inputs/hidden.md --artifact <成果物のテキスト>
 ```
+
+`--artifact` には成果物本文（記事なら原稿、スライドなら `work/content.md`、サイトなら保存したテキスト）を渡します。成果物の表層に出てくる語はペルソナがどのみち目にするため許容されます。点検対象は `hidden.md` の「想定アウトカム」「期待する行動」「成功基準」「前回レポートの要約」の節だけで、「想定受信者（詳細）」の節は想定受信者ペルソナに渡すため対象外です。
 
 `LEAK` が出たら該当語を取り除いて再点検します。`弱い一致` は目視で判断します。最後に `reference/isolation-rules.md` のチェックリストを一通り確認します。
 
@@ -107,7 +109,7 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/leak-check.py inputs/prompt-expert.md inpu
 
 ## 9. 回収し、逸脱を点検する
 
-各回答を `raw/<persona>.md` に全文保存します。`reference/deviation-check.md` で演技の逸脱を点検します。逸脱が重大なら、そのペルソナだけ**同じプロンプト**で1回まで再実行します。再実行プロンプトに「前回はこう逸脱した」と書いてはいけません（逸脱内容を知らせること自体が文脈になります）。知識状態の文言を強める程度にとどめます。
+各回答を `raw/<persona>.md` に全文保存します。保存が権限の確認で止まった場合は、その場で利用者に許可を求めます。保存できないまま進めるときは、その旨を最終報告に明記します。`reference/deviation-check.md` で演技の逸脱を点検します。逸脱が重大なら、そのペルソナだけ**同じプロンプト**で1回まで再実行します。再実行プロンプトに「前回はこう逸脱した」と書いてはいけません（逸脱内容を知らせること自体が文脈になります）。知識状態の文言を強める程度にとどめます。
 
 ## 10. 統合する
 
@@ -116,7 +118,7 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/leak-check.py inputs/prompt-expert.md inpu
 1. `inputs/hidden.md`
 2. `raw/*.md` の全部（要約しない）
 3. 種別スキルの「判定の観点」
-4. 出力先 `report.md` の絶対パス
+4. 出力先 `report.md` の絶対パス（シンセサイザーはファイルに書き、回答にも全文を返します。完了後に `report.md` が存在しなければ、シンセサイザーの回答全文をそのまま `report.md` として保存します）
 5. ラウンド番号と、`--prev` があれば前回レポートの全文
 6. 逸脱点検の結果（どのペルソナにどんな逸脱があり、再実行したか）
 
