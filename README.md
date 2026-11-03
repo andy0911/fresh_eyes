@@ -20,7 +20,13 @@ claude --plugin-dir /path/to/fresh-eyes
 
 マーケットプレイス経由で配布する場合は、このディレクトリをプラグインとして登録してください。
 
-同梱の MCP サーバは初回起動時に取得されます。`npx`（Node.js）と `uvx`（uv）が必要です。スライドの画像化には任意で LibreOffice と poppler（`pdftoppm`）を使います。
+同梱の Playwright MCP は初回起動時に取得されます。`npx`（Node.js）が必要で、ブラウザ本体は事前に一度だけ次で導入します。
+
+```bash
+npx playwright install chromium
+```
+
+文書変換（スライド等）には `uvx`（uv）を使います。スライドの画像化には任意で LibreOffice と poppler（`pdftoppm`）を使います。
 
 ## 使い方
 
@@ -50,13 +56,16 @@ claude --plugin-dir /path/to/fresh-eyes
 改善後の再レビュー：
 
 ```
-/fresh-eyes:review article ./drafts/launch-post.md --round 2 --prev reviews/20261103-1200-article-launch-post/report.md
+/fresh-eyes:review article ./drafts/launch-post.md --round 2 --prev reviews/20261103-1200-article/report.md
 ```
+
+2回目以降の `--goal` `--message` `--audience` は前回の非公開情報から復元されます。
 
 主なオプション：
 
 | オプション | 意味 |
 | --- | --- |
+| `--message` | 作者が一番伝えたいこと（一文）。理解度の採点に使う |
 | `--action` | 期待する具体的な行動（goal に含まれていれば不要） |
 | `--criteria` | 成功基準 |
 | `--expert` | 専門家の職能を上書き |
@@ -69,7 +78,7 @@ claude --plugin-dir /path/to/fresh-eyes
 
 ## 出力
 
-`reviews/<日時>-<種別>-<名前>/report.md` に次の構成で保存されます。
+`reviews/<日時>-<種別>/report.md` に次の構成で保存されます（ディレクトリ名に成果物の名前を入れないのは、パスがペルソナに渡るためです）。
 
 0. **判定：想定したアウトカムは得られるか**（得られる／条件付きで得られる／得られない）。各ペルソナが受け取った要点と作者の意図の一致表
 1. **得られないなら、どこを改善すべきか**（P1〜P3 の優先順）
@@ -79,7 +88,7 @@ claude --plugin-dir /path/to/fresh-eyes
 5. 次回のレビューで確認したいこと
 6. 付録（演技の逸脱、前回との差分、実行情報）
 
-ペルソナの生の回答は `raw/` に、ペルソナに渡したプロンプトは `inputs/` に残ります。`reviews/` は `.gitignore` への追加を推奨します。
+ペルソナの生の回答は `raw/` に、ペルソナに渡したプロンプトは `inputs/` に残ります。想定アウトカムなどの非公開情報はプロジェクトの外（`~/.claude/plugins/data/fresh-eyes/runs/`）に置かれます。`reviews/` は `.gitignore` への追加を推奨します。
 
 ## 情報遮断の仕組み
 
@@ -90,7 +99,9 @@ claude --plugin-dir /path/to/fresh-eyes
 | 時間の目安、言語 | 他のペルソナの存在と反応 |
 | 専門家にだけ：具体的な問い | 前回の結果、「改訂版」という情報 |
 
-- ペルソナは `omitClaudeMd: true` の白紙のサブエージェントとして起動されます
+- ペルソナは `omitClaudeMd: true` の白紙のサブエージェントとして起動され、ツールは閲覧系に限定されます（Bash、Grep、Glob、任意コード実行、ファイル送出、任意 HTTP リクエストを持ちません。専門家だけ事実確認用の検索を持ちます）
+- 成果物は中立なファイル名でコピーして渡し、非公開情報はプロジェクトの外に置きます。`.fresh-eyes.yaml` に `goal` を書く場合、それはプロジェクト直下の平文である点に留意してください
+- Web サイトと Web アプリではブラウザがセッションに1つのため、ペルソナを1体ずつ順番に走らせ、間でブラウザを閉じます
 - 起動前に `scripts/leak-check.py` が、プロンプトと非公開情報の特徴語の重なりを点検します
 - 無垢・関心層は「知っていること／知らないこと／誤解しやすいこと」を列挙した知識状態で定義され、回答後に逸脱（専門用語の使用、自力解決）を点検します
 - 統合は別エージェント（シンセサイザー）が行い、一致した指摘と分かれた指摘を平均化せずに並べ、定量的な主張をしません
@@ -101,8 +112,9 @@ claude --plugin-dir /path/to/fresh-eyes
 
 | MCP | 用途 |
 | --- | --- |
-| Playwright MCP（`@playwright/mcp`、`--isolated`） | Web サイトと Web アプリの閲覧・操作。ログイン状態を持ち込まない |
-| MarkItDown MCP（`markitdown-mcp`） | PPTX、DOCX などの文書のテキスト化 |
+| Playwright MCP（`@playwright/mcp` 0.0.84、`--headless --isolated`） | Web サイトと Web アプリの閲覧・操作。ログイン状態を持ち込まない |
+
+文書変換（PPTX、DOCX、PDF）は MCP ではなく同梱スクリプト `scripts/to-markdown.sh` が MarkItDown を `uvx` 経由で実行します。MCP として常駐させる必要がないためです。
 
 同梱しない（環境にあれば任意で使う）：
 
@@ -122,7 +134,7 @@ claude --plugin-dir /path/to/fresh-eyes
 ```
 fresh-eyes/
 ├── .claude-plugin/plugin.json
-├── .mcp.json                      Playwright、MarkItDown
+├── .mcp.json                      Playwright
 ├── skills/
 │   ├── review/                    オーケストレータ（/fresh-eyes:review）
 │   │   └── reference/             遮断ルール、知識状態の書き方、プロンプト雛形、逸脱点検
@@ -137,6 +149,7 @@ fresh-eyes/
 │   ├── persona-interested.md
 │   ├── persona-naive.md
 │   ├── persona-recipient.md
+│   ├── persona-expert-cli.md       CLI・ローカル起動アプリの専門家（Bash あり）
 │   └── synthesizer.md
 ├── scripts/
 │   ├── leak-check.py              プロンプトへの非公開情報の漏れ点検

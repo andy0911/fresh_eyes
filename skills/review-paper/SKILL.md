@@ -10,7 +10,7 @@ user-invocable: false
 
 - PDF（Read でページ指定して読める。変換不要）
 - Markdown、テキスト
-- LaTeX（`scripts/to-markdown.sh` で Markdown 化するか、コンパイル済み PDF を使う）
+- LaTeX はコンパイル済み PDF を使う（ソースのままでは数式と図が読めない）
 - Word（`scripts/to-markdown.sh` で Markdown 化し、図は PDF で参照）
 
 ## 準備手順

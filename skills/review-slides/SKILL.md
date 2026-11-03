@@ -14,7 +14,7 @@ user-invocable: false
 
 ## 準備手順
 
-1. `${CLAUDE_PLUGIN_ROOT}/scripts/to-markdown.sh <ファイル> work/slides/` を実行する。`content.md`（1枚ごとのテキスト）、`document.pdf`（PPTX の場合、LibreOffice があれば）、`pages/*.png`（pdftoppm があれば）が生成される。
+1. `${CLAUDE_PLUGIN_ROOT}/scripts/to-markdown.sh <ファイル> work/slides/` を実行する。`content.md`（1枚ごとのテキスト）、`document.pdf`（PPTX の場合、LibreOffice があれば）、`pages/*.png`（pdftoppm があれば）が生成される。画像が作れなかった場合、ペルソナは文字だけを見ることになるので、レポート付録の実行情報に「ペルソナが見たのは画像か文字か」を必ず記す。
 2. **閲覧モードを決める。** 作者に確認する（これは意図ではなく配布形態なので聞いてよい）。
    - 配布資料モード（既定）：発表者なしで読まれる。ペルソナはスライドだけを読む。
    - 発表モード：発表者が話す。スピーカーノートがあれば、各スライドの下に「発表者の話す内容」として添える。ただし、ペルソナには「聞き手」として体験させ、スライドの文字を全部読む時間はないことを状況に書く。
@@ -69,5 +69,5 @@ user-invocable: false
 
 ## 必要なツール
 
-- `scripts/to-markdown.sh`（同梱の MarkItDown、LibreOffice と pdftoppm があれば画像化）
+- `scripts/to-markdown.sh`（MarkItDown を uv 経由で実行。LibreOffice と pdftoppm があれば画像化）
 - Read（画像、PDF）

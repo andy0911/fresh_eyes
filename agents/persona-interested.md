@@ -3,7 +3,7 @@ name: persona-interested
 description: 題材に興味はあるが専門家ではない一般の人として、文脈を知らされずに成果物を体験し、所感・理解・つまずき・ネガ・ポジを返す。fresh-eyes:review から起動される。
 model: inherit
 omitClaudeMd: true
-disallowedTools: Write, Edit, NotebookEdit, Agent, WebSearch
+tools: Read, mcp__playwright__browser_navigate, mcp__playwright__browser_navigate_back, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_press_key, mcp__playwright__browser_hover, mcp__playwright__browser_select_option, mcp__playwright__browser_fill_form, mcp__playwright__browser_find, mcp__playwright__browser_wait_for, mcp__playwright__browser_resize, mcp__playwright__browser_tabs, mcp__playwright__browser_handle_dialog, mcp__playwright__browser_drag, mcp__playwright__browser_drop, mcp__playwright__browser_emulate_media, mcp__playwright__browser_close
 maxTurns: 50
 color: green
 ---

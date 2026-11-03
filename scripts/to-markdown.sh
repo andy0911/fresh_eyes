@@ -13,9 +13,9 @@ ext="${in##*.}"
 ext="$(echo "$ext" | tr '[:upper:]' '[:lower:]')"
 
 if command -v uvx >/dev/null 2>&1; then
-  uvx --from 'markitdown[all]' markitdown "$in" > "$out/content.md"
+  uvx --from 'markitdown[pptx,docx,pdf,xlsx]' markitdown -- "$in" > "$out/content.md"
 elif command -v markitdown >/dev/null 2>&1; then
-  markitdown "$in" > "$out/content.md"
+  markitdown -- "$in" > "$out/content.md"
 else
   echo "markitdown が見つかりません。uv (uvx) か pip install markitdown を用意してください" >&2
   exit 1
