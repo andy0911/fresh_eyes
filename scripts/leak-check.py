@@ -39,6 +39,9 @@ DEFAULT_ALLOW = {
     "依頼", "種別", "場所", "定義", "絶対", "守る", "書き換え", "指定", "情報", "非公開",
     "スマホ", "スマートフォン", "パソコン", "タブレット", "端末", "ブラウザ", "iphone", "android", "ipad", "mac", "windows",
     "http", "https", "html", "file", "path", "markdown", "json", "app", "web", "url", "pdf", "png", "jpg", "md",
+    # プロンプト雛形に必ず含まれる語
+    "成果", "果物", "相当", "書き換", "見てほしい", "依頼文", "フォーマット", "絶対に守る", "開かない",
+    "article", "design", "slides", "paper", "website", "reviews", "inputs", "work", "artifact", "prompts", "home", "user",
 }
 HIRA_STOP = {"ください", "ように", "について", "ところ", "ている", "という", "それぞれ", "あなた", "ではなく", "してください", "とおり", "ません", "ながら"}
 
