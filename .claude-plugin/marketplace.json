@@ -1,0 +1,14 @@
+{
+  "name": "fresh-eyes-marketplace",
+  "description": "Fresh Eyes：文脈を知らない4種のペルソナに成果物を体験させ、想定したアウトカムが得られるかを判定するレビュープラグインのマーケットプレイス",
+  "owner": { "name": "andyhanano" },
+  "plugins": [
+    {
+      "name": "fresh-eyes",
+      "source": "./",
+      "description": "成果物（デザイン・記事・アプリ・Webサイト・論文・スライド）を、専門家・関心層・無垢・想定受信者の4ペルソナが独立に体験し、「想定したアウトカムは得られるか／得られないならどこを改善すべきか」を返す",
+      "category": "review",
+      "tags": ["review", "persona", "usability", "feedback", "multi-agent"]
+    }
+  ]
+}

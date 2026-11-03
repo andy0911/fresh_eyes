@@ -12,13 +12,36 @@ LLM ペルソナは実在の受信者の代表ではありません。出力は 
 
 ## インストール
 
-ローカルで試す：
+このリポジトリはマーケットプレイスを兼ねています（`.claude-plugin/marketplace.json`）。GitHub に置いた場合は Claude Code 内で次を実行します（`<owner>/<repo>` は実際のリポジトリに置き換えてください）。
+
+```
+/plugin install fresh-eyes --marketplace <owner>/<repo>
+```
+
+二段階で行う場合：
+
+```
+/plugin marketplace add <owner>/<repo>
+/plugin install fresh-eyes@fresh-eyes-marketplace
+```
+
+手元のクローンから入れる場合（ターミナル）：
+
+```bash
+claude plugin marketplace add /path/to/fresh-eyes
+```
+
+```bash
+claude plugin install fresh-eyes@fresh-eyes-marketplace
+```
+
+インストールせずに一時的に試す：
 
 ```bash
 claude --plugin-dir /path/to/fresh-eyes
 ```
 
-マーケットプレイス経由で配布する場合は、このディレクトリをプラグインとして登録してください。
+更新は `/plugin marketplace update fresh-eyes-marketplace` のあと `/plugin update fresh-eyes@fresh-eyes-marketplace` です。
 
 同梱の Playwright MCP は初回起動時に取得されます。`npx`（Node.js）が必要で、ブラウザ本体は事前に一度だけ次で導入します。
 
