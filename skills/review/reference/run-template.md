@@ -76,11 +76,14 @@ article
 
 ### extra-1 | 財務担当者 | type=expert
 （--personas で追加されたペルソナ。type は expert か recipient）
+
+### naive-2 | 全く無垢な人（別の状況）| type=naive
+（--count 2 のとき。人物像の骨格は naive と同じで、状況だけ変える。例：スマホで通勤中、残り2分、同僚に勧められて開いた）
 ```
 
 規則：
 
-- `### <id> | <表示名> [| type=<型>]`。id は英数字とハイフンのみ。`expert` `interested` `naive` `recipient` は型が自動で決まります
+- `### <id> | <表示名> [| type=<型>]`。id は英数字とハイフンのみ。`expert` `interested` `naive` `recipient` は型が自動で決まります。`naive-2` のような id は `type=` で型を指定します
 - `人物像` `知っていること` `知らないこと` は必須。`時間` を省くと 5 分相当になります
 - 想定受信者の節に `--goal` `--action` `--criteria` の内容を書かないこと。無垢・関心層の「知らないこと」は成果物の表層から導くこと
 - 「アクセス手順」はすべてのペルソナに共通です。開始地点だけを指定し、見る順序は誘導しません

@@ -79,6 +79,7 @@ ${CLAUDE_PLUGIN_DATA}/runs/<YYYYMMDD-HHMM>-<種別>/run.md, hidden.md   非公�
 - 想定受信者の人物像は `--audience` から書くが、`--goal` `--action` `--criteria` の内容は一切含めない
 - 専門家には種別スキルの「具体的な問い」を付け、題材に応じて職能を具体化する
 - 時間の目安は `reference/persona-prompts.md` の表に従う
+- `--count 2` のときは各型を `naive-1` `naive-2` のように2体書き、人物像の骨格は同じまま「状況」（端末、時間帯、流入経路、気分、残り時間）を変える。同じ仕様を2回走らせても多様性は出ない
 
 ## 6. 生成と漏れ点検（スクリプト1回）
 
@@ -101,7 +102,7 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/prepare-run.py ${CLAUDE_PLUGIN_DATA}/runs/
 - ブラウザを使う種別（Web サイト、Web アプリ）では**1体ずつ順番に**起動します。Playwright のブラウザはセッションに1つで、並列にすると互いのタブや画面状態を見てしまうためです。各ペルソナの完了後に `browser_close`（`mcp__playwright__browser_close` か `mcp__plugin_fresh-eyes_playwright__browser_close`）を呼んでから次を起動します
 - `subagent_type` は起動表のとおり（`fresh-eyes:persona-expert` `-interested` `-naive` `-recipient`。CLI やローカル起動のアプリで専門家にコマンド実行が必要なときだけ `fresh-eyes:persona-expert-cli`）
 - `description` は「専門家がレビュー中」のように短く
-- `--count 2` なら同じ起動文で2体起動し、保存先を `raw/<id>-1.md` `raw/<id>-2.md` に分けます
+- `--count 2` のときは、同じプロンプトを2回走らせるのではなく、run.md に `naive-1` `naive-2` のように**状況を変えた別のペルソナ**として書いておきます（起動表にそのまま並びます）
 - `model` は `--model` があればその値、なければ `--fast` のとき `haiku`。どちらもなければ指定しません
 
 全員の完了を待ちます。途中で結果を予想して書き始めてはいけません。
