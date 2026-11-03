@@ -2,7 +2,7 @@
 name: review
 description: 成果物（デザイン・記事・アプリ・Webサイト・論文・スライド）を、文脈を知らない4種のペルソナ（専門家・関心がある人・全く無垢な人・想定受信者）に体験させ、「想定したアウトカムは得られるか／得られないならどこを改善すべきか」を判定するレビューを実行する。「無垢なレビュアーに見せて」「初見の目で見て」「fresh eyes でレビュー」と言われたときに使う。
 argument-hint: <design|article|app|website|paper|slides> <path-or-url> [--goal "想定アウトカム"] [--audience "想定受信者"] [--action "期待する行動"] [--round N --prev <report.md>]
-allowed-tools: Bash(${CLAUDE_PLUGIN_ROOT}/scripts/*), Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/*), Bash(mkdir *), Bash(date *), Bash(curl -sI *), Read, Write, Glob, Agent, Skill, AskUserQuestion, mcp__playwright__browser_close
+allowed-tools: Bash(${CLAUDE_PLUGIN_ROOT}/scripts/*), Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/*), Bash(mkdir *), Bash(date *), Bash(curl -sI *), Read, Write, Glob, Agent, Skill, AskUserQuestion, mcp__playwright__browser_close, mcp__plugin_fresh-eyes_playwright__browser_close
 ---
 
 # Fresh Eyes レビュー（オーケストレータ）
@@ -104,7 +104,7 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/leak-check.py inputs/prompt-expert.md ${CL
 
 ファイルを閲覧する種別（デザイン・記事・論文・スライド）では、`Agent` ツールで全ペルソナを**同一メッセージで並列に**起動します。
 
-ブラウザを使う種別（Web サイト、Web アプリ）では**1体ずつ順番に**起動します。Playwright のブラウザはセッションに1つで、並列にすると互いのタブや画面状態を見てしまうためです。各ペルソナの完了後に `mcp__playwright__browser_close` を呼んでから次を起動します（ブラウザを閉じると、次の `browser_navigate` で新しい空の文脈が始まります）。
+ブラウザを使う種別（Web サイト、Web アプリ）では**1体ずつ順番に**起動します。Playwright のブラウザはセッションに1つで、並列にすると互いのタブや画面状態を見てしまうためです。各ペルソナの完了後に `browser_close`（ツール名は `mcp__playwright__browser_close` か `mcp__plugin_fresh-eyes_playwright__browser_close`。インストール方法で接頭辞が変わります）を呼んでから次を起動します（ブラウザを閉じると、次の `browser_navigate` で新しい空の文脈が始まります）。
 
 - `subagent_type`：`fresh-eyes:persona-expert` `fresh-eyes:persona-interested` `fresh-eyes:persona-naive` `fresh-eyes:persona-recipient`。追加ペルソナは最も近い型を選びます（職能なら expert、特定の人物像なら recipient）。CLI やローカル起動のアプリで専門家にコマンド実行が必要なときだけ `fresh-eyes:persona-expert-cli` を使います。
 - `prompt`：`inputs/prompt-<persona>.md` の**全文**を貼ります。パスだけ渡してはいけません（ペルソナは作業ディレクトリを探索しません）。
