@@ -1,0 +1,9 @@
+{
+  "name": "fresh-eyes",
+  "displayName": "Fresh Eyes",
+  "version": "0.1.0",
+  "description": "成果物を、文脈を知らない4種のペルソナ（専門家・関心層・無垢・想定受信者）に体験させ、想定したアウトカムが得られるかを判定して改善点を返すレビューシステム",
+  "author": { "name": "andyhanano" },
+  "license": "MIT",
+  "keywords": ["review", "persona", "usability", "feedback", "multi-agent", "design", "article", "slides", "paper", "website", "app"]
+}

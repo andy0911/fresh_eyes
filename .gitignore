@@ -1,0 +1,5 @@
+reviews/
+.work/
+*.pyc
+__pycache__/
+.DS_Store
