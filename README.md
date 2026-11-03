@@ -205,6 +205,28 @@ fresh-eyes/
 
 設計の根拠となった文献（知識の呪い、ヒューリスティック評価の評価者数、LLM 評価者の迎合・アンカリング・自己選好、LLM ペルソナ模擬の限界、模擬学習者の能力の逆説など）は、付属の設計文書にまとめています。
 
+## バージョニング
+
+[セマンティック バージョニング](https://semver.org/lang/ja/) に従います。バージョンは `.claude-plugin/plugin.json` と `.claude-plugin/marketplace.json` に同じ値で記載し、git タグ `vX.Y.Z` を付けます。変更内容は `CHANGELOG.md` にあります。
+
+| 上げる桁 | このプラグインでの意味 |
+| --- | --- |
+| MAJOR | 互換性のない変更。コマンドや必須オプションの変更、`report.md` の見出し構成や `--prev` で読む形式の変更、ペルソナの回答見出しの変更 |
+| MINOR | 後方互換の機能追加。種別・オプション・ペルソナ型・MCP の追加、プロンプトや判定基準の実質的な変更 |
+| PATCH | 後方互換の修正。文言の調整、スクリプトの不具合修正、ドキュメント |
+
+1.0.0 より前（0.x）は、MINOR に互換性のない変更が含まれることがあります。リリースは次で行います（`CHANGELOG.md` の `[Unreleased]` に変更を書いてから）。
+
+```bash
+scripts/bump-version.sh minor
+```
+
+```bash
+git push origin main --follow-tags
+```
+
+利用側の更新は `/plugin marketplace update fresh-eyes-marketplace` のあと `/plugin update fresh-eyes@fresh-eyes-marketplace` です。
+
 ## ライセンス
 
 MIT
